@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[이름] — 말 나온 순간, 이미 해 뒀어요</title>
+<meta name="description" content="업무 대화에서 할 일을 찾아, 결과물을 미리 만들고 검증해 둡니다. 출시 준비 중.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#fff; --bg2:#f7f8fa; --text:#0f1115; --text2:#4a4f59; --text3:#8b909a; --faint:#c9ccd2;
+  --accent:#005FB8; --accent-ink:#fff; --accent-soft:rgba(0,95,184,.09);
+  --line:rgba(15,17,21,.08); --ok:#14894E; --risk:#D93A2B;
+  /* Mica 앱 창 */
+  --wall:#dfe7f3; --side:rgba(243,246,251,.7); --main:#fbfbfc; --panel:#f6f7f9; --card:#fff; --card-b:rgba(0,0,0,.06);
+  --sh:0 1px 2px rgba(15,20,40,.05),0 30px 80px -30px rgba(15,30,70,.35);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-t=light]){
+    --bg:#121212; --bg2:#181818; --text:#ECEBE7; --text2:#B5B3AC; --text3:#85837C; --faint:#3a3a38;
+    --accent:#60CDFF; --accent-ink:#00131F; --accent-soft:rgba(96,205,255,.1);
+    --line:rgba(255,255,255,.08); --ok:#6CC28E; --risk:#F07C68;
+    --wall:#202631; --side:rgba(32,36,44,.7); --main:#272727; --panel:#232323; --card:#2d2d2d; --card-b:rgba(255,255,255,.06);
+    --sh:0 30px 80px -30px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);
+  -webkit-font-smoothing:antialiased;letter-spacing:-.01em;line-height:1.6;overflow-x:hidden}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+section{border-top:1px dashed var(--line);padding:120px 24px}
+.inner{max-width:880px;margin:0 auto}
+.eyebrow{display:inline-block;color:var(--accent);font-size:14px;font-weight:500;margin-bottom:14px}
+h2{font-size:clamp(28px,4vw,42px);font-weight:500;letter-spacing:-.025em;line-height:1.25}
+.lead{color:var(--text2);font-size:17px;margin-top:16px;max-width:640px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;border:0;cursor:pointer;
+  background:var(--text);color:var(--bg);font-weight:600;font-size:15px;text-decoration:none}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* 내비 */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .25s,border-color .25s}
+.nav .in{max-width:1180px;margin:0 auto;height:60px;display:flex;align-items:center;gap:24px;padding:0 24px}
+.nav.scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:17px;text-decoration:none}
+.mark{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(145deg,#2f86d8,#005FB8);color:#fff;font-size:13px;font-weight:800}
+.nav .sp{flex:1}
+.nav .links{display:flex;gap:22px;font-size:14px;color:var(--text2)}
+.nav .links a{text-decoration:none}
+.nav .btn{height:36px;padding:0 16px;font-size:14px}
+
+/* 히어로 */
+.hero{padding:136px 24px 0;border-top:0}
+.hero .top{max-width:1132px;margin:0 auto;display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:end}
+.hero h1{font-size:clamp(42px,6.6vw,80px);font-weight:600;letter-spacing:-.045em;line-height:1.06}
+.hero .copy p{color:var(--text2);font-size:18px;line-height:1.6;margin-bottom:24px;max-width:400px}
+.hero .note{display:block;font-size:13px;color:var(--text3);margin-top:14px}
+.shot{position:relative;max-width:1132px;margin:64px auto 0;aspect-ratio:1440/900;border-radius:18px;overflow:hidden;
+  border:1px solid var(--line);box-shadow:0 50px 120px -50px rgba(15,30,70,.5)}
+.shot iframe{position:absolute;top:0;left:0;width:1440px;height:900px;border:0;transform-origin:0 0}
+.file{display:flex;gap:10px;align-items:center}
+.ft{width:30px;height:36px;border-radius:7px;flex:none;display:grid;place-items:end center;padding-bottom:4px;font-size:8.5px;font-weight:800;color:#fff}
+.ft.xls{background:linear-gradient(160deg,#3ccf8e,#14894E)} .ft.hwp{background:linear-gradient(160deg,#4d9bff,#2457e6)}
+.ft.doc{background:linear-gradient(160deg,#5b8cff,#2b5bd7)} .ft.pdf{background:linear-gradient(160deg,#ff6b6b,#d93a2b)} .ft.ppt{background:linear-gradient(160deg,#ff8a5b,#e4572e)}
+.steps{display:flex;gap:4px;margin-top:8px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--ok)}
+.status{font-size:11.5px;margin-top:6px;color:var(--text3)}
+.status b{color:var(--ok);font-weight:600}
+/* 미리보기 (엑셀 견적서) */
+.doc-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.doc-h h4{font-size:16px;font-weight:700}
+.doc-h .ok{margin-left:auto;font-size:12px;color:var(--ok);font-weight:600}
+.sheet{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+.sheet th,.sheet td{border:1px solid var(--line);padding:7px 10px;text-align:right}
+.sheet th{background:var(--bg2);font-weight:600;color:var(--text2)}
+.sheet td:first-child,.sheet th:first-child{text-align:left}
+.sheet tr.sum td{font-weight:700}
+.done-btn{margin-top:16px;display:inline-flex;height:32px;padding:0 14px;border-radius:6px;align-items:center;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:13px}
+
+/* ② 선언문 */
+.manifesto{display:grid;grid-template-columns:200px 1fr;gap:40px}
+.manifesto p{font-size:clamp(20px,2.4vw,26px);line-height:1.55;letter-spacing:-.02em;font-weight:500}
+.manifesto p+p{margin-top:24px}
+.w{color:var(--faint);transition:color .2s}
+
+/* 키워드 반짝임 */
+.shine{background:linear-gradient(90deg,var(--accent),var(--accent) 30%,var(--text3) 50%,var(--text) 70%);background-size:300% 100%;background-position:100% 0;
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.shine.go{animation:shine 1.6s ease-out forwards}
+@keyframes shine{from{background-position:100% 0}to{background-position:0 0}}
+
+/* 카드 3장 */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.fc .art{position:relative;height:260px;border-radius:14px;overflow:hidden;display:grid;place-items:center;padding:20px}
+.fc .art.a{background:radial-gradient(70% 80% at 20% 20%,#c9dcff,transparent),radial-gradient(60% 70% at 90% 90%,#e3d4ff,transparent),#eef3fb}
+.fc .art.b{background:radial-gradient(70% 80% at 80% 20%,#c4ecdc,transparent),radial-gradient(60% 70% at 10% 90%,#cfe6ff,transparent),#eef7f3}
+.fc .art.c{background:radial-gradient(70% 80% at 30% 80%,#ffe1cc,transparent),radial-gradient(60% 70% at 90% 10%,#ffd6e6,transparent),#fbf3ef}
+@media (prefers-color-scheme:dark){
+  :root:not([data-t=light]) .fc .art.a{background:radial-gradient(70% 80% at 20% 20%,#1f3354,transparent),radial-gradient(60% 70% at 90% 90%,#2e2448,transparent),#1a1d24}
+  :root:not([data-t=light]) .fc .art.b{background:radial-gradient(70% 80% at 80% 20%,#173b31,transparent),radial-gradient(60% 70% at 10% 90%,#1b2e47,transparent),#171d1c}
+  :root:not([data-t=light]) .fc .art.c{background:radial-gradient(70% 80% at 30% 80%,#45291b,transparent),radial-gradient(60% 70% at 90% 10%,#3f1f2e,transparent),#1f1a19}
+}
+.fc .cap{padding:16px 6px 0;font-size:15px;color:var(--text2)}
+.fc .cap b{color:var(--text);font-weight:600}
+.frag{background:var(--card);border:1px solid var(--card-b);border-radius:10px;padding:12px 14px;box-shadow:0 10px 30px -12px rgba(15,30,70,.25);font-size:13px;width:100%;max-width:260px}
+.frag small{display:block;font-size:11px;color:var(--text3);margin-bottom:4px}
+.frag .hl{background-size:100% 100%}
+.mini-row{height:8px;border-radius:4px;background:var(--line);margin-top:8px}
+.rise{opacity:0;transform:translateY(24px)}
+
+/* ④ 결과물 */
+.tiles{display:flex;gap:14px;flex-wrap:wrap;margin:40px 0}
+.tiles .ft{width:64px;height:76px;border-radius:14px;font-size:13px;padding-bottom:9px}
+.split{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+.box{border:1px solid var(--line);border-radius:14px;padding:22px;background:var(--bg2)}
+.say{font-size:13.5px;padding:9px 12px;border-radius:12px;max-width:85%;margin-top:10px}
+.say.me{margin-left:auto;background:var(--accent);color:var(--accent-ink);border-radius:12px 4px 12px 12px}
+.say.ai{background:var(--card);border:1px solid var(--card-b)}
+
+/* ⑤ 기억 */
+.memo{display:flex;flex-direction:column;gap:10px;margin-top:40px;max-width:520px}
+.memo .frag{max-width:none}
+
+/* ⑥ 신뢰 */
+.mask{color:var(--accent)}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.trust .box h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.trust .box p{font-size:14px;color:var(--text2)}
+
+/* ⑦ 신청 */
+.cta{text-align:center}
+form{max-width:440px;margin:36px auto 0;text-align:left;display:flex;flex-direction:column;gap:14px}
+label{font-size:13px;font-weight:600;color:var(--text2);display:flex;flex-direction:column;gap:6px}
+label small{font-weight:400;color:var(--text3)}
+input[type=email],input[type=text],select{font-weight:400;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);padding:0 14px;font-size:15px}
+.check{flex-direction:row;align-items:center;gap:8px;font-weight:400}
+.hp{position:absolute;left:-9999px}
+.msgline{min-height:22px;font-size:14px;text-align:center}
+.msgline.ok{color:var(--ok)}.msgline.err{color:var(--risk)}
+form .btn{justify-content:center;width:100%}
+
+footer{border-top:1px dashed var(--line);padding:40px 24px;font-size:13px;color:var(--text3);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+footer a{color:var(--text2)}
+
+
+/* 하루 (고정 구간) */
+.pin{max-width:1080px;margin:48px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.moments{display:flex;flex-direction:column;gap:26px}
+.mo{opacity:.22;transition:opacity .35s}
+.mo.on{opacity:1}
+.mo .when{display:flex;align-items:baseline;gap:10px}
+.mo time{font-size:30px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.mo .rm{font-size:13px;color:var(--text3)}
+.mo .bub{margin-top:8px;display:inline-block;background:var(--bg2);border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:10px 14px;font-size:15px;line-height:1.5}
+.tray{border:1px solid var(--line);border-radius:20px;padding:22px;background:var(--bg2)}
+.tray .clock{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--text3)}
+.tray .clock b{font-size:22px;color:var(--text);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.tray .bar{height:4px;background:var(--line);border-radius:2px;margin:10px 0 16px;overflow:hidden}
+.tray .bar i{display:block;height:100%;width:0;background:var(--accent)}
+.fcard{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;background:var(--card);border:1px solid var(--card-b);margin-top:10px;opacity:.35;transition:opacity .3s,box-shadow .3s}
+.fcard b{font-size:14px;font-weight:600}.fcard small{display:block;font-size:12px;color:var(--text3)}
+.fcard .st{margin-left:auto;font-size:12px;font-weight:600;color:var(--text3);white-space:nowrap}
+.fcard.make{opacity:1;box-shadow:0 0 0 2px var(--accent)}
+.fcard.ready{opacity:1}.fcard.ready .st{color:var(--ok)}
+.tray .sum{margin-top:16px;font-size:15px;font-weight:600;opacity:0;transition:opacity .4s}
+.tray .sum.on{opacity:1}
+
+/* 검증 (고정 구간) */
+.vsheet{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.vsheet th,.vsheet td{border:1px solid var(--line);padding:10px 12px;text-align:right;transition:background .3s,color .3s}
+.vsheet th{background:var(--bg2);font-weight:600;color:var(--text2)}
+.vsheet td:first-child,.vsheet th:first-child{text-align:left}
+.vsheet td.err{background:color-mix(in srgb,var(--risk) 14%,transparent);color:var(--risk);font-weight:700}
+.vsheet td.fix{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok);font-weight:700}
+.paperbox{border:1px solid var(--line);border-radius:20px;padding:22px;background:var(--bg2)}
+.paperbox .doc-h .ver{margin-left:auto;font-size:12px;color:var(--text3);font-weight:600}
+.cks{display:flex;flex-direction:column;gap:12px}
+.ck{display:flex;gap:14px;padding:16px;border-radius:14px;border:1px solid var(--line);opacity:.35;transition:opacity .3s,border-color .3s}
+.ck i{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:14px;font-weight:700;background:var(--line);color:var(--text3)}
+.ck b{display:block;font-size:15px;font-weight:600}.ck span{font-size:13.5px;color:var(--text2)}
+.ck.ok,.ck.bad{opacity:1}
+.ck.ok i{background:var(--ok);color:#fff}
+.ck.bad{border-color:var(--risk)}.ck.bad i{background:var(--risk);color:#fff}
+.ck .why{display:none;color:var(--risk);font-weight:600}.ck.bad .why{display:block}
+.vnote{font-size:14px;color:var(--text3);margin-top:14px;min-height:22px}
+
+/* 결과물 가로 갤러리 */
+.gal{margin-top:48px;overflow:hidden}
+.track{display:flex;gap:24px;width:max-content;padding:8px 48px 24px}
+.pg{width:340px;height:440px;flex:none;border-radius:6px;background:#fff;color:#14161b;padding:28px 26px;font-size:11.5px;line-height:1.55;position:relative;
+  box-shadow:0 1px 2px rgba(15,20,40,.06),0 30px 60px -30px rgba(15,30,70,.35);border:1px solid rgba(15,17,21,.06)}
+.pg.wide{width:520px;height:300px;align-self:center}
+.pg .tag{position:absolute;top:-12px;left:18px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text);background:var(--bg);border:1px solid var(--line);padding:3px 10px 3px 4px;border-radius:999px}
+.pg .tag .ft{width:20px;height:22px;border-radius:5px;font-size:6.5px;padding-bottom:2px}
+.pg h5{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+.pg table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.pg td,.pg th{border:1px solid #e3e5ea;padding:5px 7px;text-align:right}.pg th{background:#f4f5f7}
+.pg td:first-child,.pg th:first-child{text-align:left}
+.pg .ln{height:7px;border-radius:3px;background:#eceef2;margin:7px 0}
+.pg .kv{display:grid;grid-template-columns:52px 1fr;gap:4px 8px;margin:10px 0 14px;border-top:2px solid #14161b;border-bottom:1px solid #d6d9df;padding:8px 0}
+.pg .kv b{font-weight:700}
+.pg ul{padding-left:16px;margin:4px 0 10px}
+.pg .bars{display:flex;align-items:flex-end;gap:14px;height:120px;margin-top:16px}
+.pg .bars i{flex:1;background:#2F6BFF;border-radius:4px 4px 0 0;opacity:.85}
+.pg .bars i:nth-child(odd){opacity:.45}
+.pg .center{text-align:center}
+
+/* 자주 묻는 질문 */
+.faq{max-width:880px;margin:40px auto 0}
+.faq details{border-top:1px solid var(--line);padding:18px 4px}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;font-size:17px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--text3);font-weight:400;font-size:20px;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq p{color:var(--text2);font-size:15.5px;margin-top:10px;max-width:640px}
+
+/* 반응형 */
+@media (max-width:900px){
+  .cards,.trust{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  .hero .top{grid-template-columns:1fr;gap:20px}
+  .manifesto{grid-template-columns:1fr;gap:12px}
+  .pin{grid-template-columns:1fr;gap:28px}
+  .gal{overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+@media (max-width:640px){
+  section{padding:80px 16px}
+  .hero{padding:112px 16px 0}
+  .shot{aspect-ratio:1/1;margin-top:40px}
+  .nav .links{display:none}
+  .nav .in{padding:0 16px}
+  .sheet{font-size:11px}.sheet th,.sheet td{padding:6px}
+  .vsheet{font-size:12px}.vsheet th,.vsheet td{padding:7px 6px}
+  .paperbox,.tray{padding:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .shine{background:none;color:var(--accent)}
+  .w{color:inherit}
+  .rise{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<header class="nav" id="nav"><div class="in">
+  <a class="logo" href="#"><span data-name></span></a>
+  <div class="sp"></div>
+  <nav class="links"><a href="#day">하루</a><a href="#verify">검증</a><a href="#files">결과물</a><a href="#faq">질문</a></nav>
+  <a class="btn" href="#signup">출시 알림 받기</a>
+</div></header>
+
+<div class="wrap">
+
+<!-- ① 히어로 -->
+<section class="hero">
+  <div class="top">
+    <h1>말 나온 순간,<br>이미 해 뒀어요.</h1>
+    <div class="copy">
+      <p>업무 대화에서 할 일을 찾아, 결과물을 미리 만들고 검증해 둡니다. 나는 확인만 하면 됩니다.</p>
+      <a class="btn" href="#signup">출시 알림 받기</a>
+      <span class="note">Windows와 macOS로 출시를 준비하고 있어요.</span>
+    </div>
+  </div>
+  <div class="shot" id="shot" role="img" aria-label="앱 화면: 단톡방에서 견적서 요청을 찾아 엑셀 견적서를 만들고, 검증 3번을 통과해 미리보기를 연 모습">
+    <iframe id="app" title="앱 화면 미리보기" tabindex="-1"></iframe>
+  </div>
+</section>
+
+<!-- ② 문제 -->
+<section>
+  <div class="inner manifesto">
+    <span class="eyebrow">왜 만들었나</span>
+    <div id="wipe">
+      <p>일은 대화에서 생깁니다. 그런데 처리는 매번 처음부터입니다. 대화를 복사하고, AI에게 맥락을 다시 설명하고, 양식을 맞추고, 숫자를 또 확인합니다.</p>
+      <p><span data-name></span>은 대화를 이미 알고 있습니다. 그래서 시키기 전에 만들어 둡니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 하루 -->
+<section id="day">
+<div class="pinwrap" id="daywrap">
+  <div class="inner">
+    <span class="eyebrow">하루</span>
+    <h2>하루 종일 쏟아지는 요청,<br>퇴근 전엔 다 준비돼 있어요.</h2>
+  </div>
+  <div class="pin" id="daypin">
+    <div class="moments">
+      <div class="mo"><div class="when"><time>09:02</time><span class="rm">A사 거래처</span></div><div class="bub">다음 주 화요일 미팅 전에 작년 대비 실적 정리본 부탁드립니다</div></div>
+      <div class="mo"><div class="when"><time>11:40</time><span class="rm">영업2팀 단톡방</span></div><div class="bub">주간보고 금요일 오전까지 올려 주세요</div></div>
+      <div class="mo"><div class="when"><time>14:15</time><span class="rm">시설팀</span></div><div class="bub">점검 결과 공문으로 회신 부탁해요</div></div>
+      <div class="mo"><div class="when"><time>16:50</time><span class="rm">영업2팀 단톡방</span></div><div class="bub">금요일까지 A사 견적서 부탁드려요</div></div>
+    </div>
+    <div class="tray">
+      <div class="clock"><span>오늘</span><b id="clk">09:00</b></div>
+      <div class="bar"><i id="clkbar"></i></div>
+      <div class="fcard"><span class="ft hwp">HWP</span><div><b>실적_정리본.hwpx</b><small>A사 거래처 · 화 미팅 전</small></div><span class="st">대기</span></div>
+      <div class="fcard"><span class="ft ppt">PPT</span><div><b>주간보고.pptx</b><small>영업2팀 · 금 오전</small></div><span class="st">대기</span></div>
+      <div class="fcard"><span class="ft doc">DOC</span><div><b>점검결과_회신.docx</b><small>시설팀 · 회신</small></div><span class="st">대기</span></div>
+      <div class="fcard"><span class="ft xls">XLS</span><div><b>A사_견적서.xlsx</b><small>영업2팀 · 금 18:00</small></div><span class="st">대기</span></div>
+      <div class="sum" id="daysum">퇴근 전, 4건 모두 검증을 통과해 준비됐어요.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ③ 어떻게 -->
+<section id="how">
+  <div class="inner" style="text-align:center">
+    <span class="eyebrow">어떻게</span>
+    <h2>찾고, <span class="shine">미리</span> 만들고,<br>세 번 검증합니다.</h2>
+  </div>
+  <div class="cards">
+    <div class="fc">
+      <div class="art a"><div class="frag rise"><small>거래처 단톡방 · 오전 9:02</small>다음 주 화요일 미팅 전에 <span class="hl">작년 대비 실적 정리본</span> 공유 부탁드립니다</div></div>
+      <p class="cap"><b>찾아냄</b> 대화 속 요청과 마감을 알아서 집어냅니다.</p>
+    </div>
+    <div class="fc">
+      <div class="art b"><div class="frag rise"><div class="file"><span class="ft hwp">HWP</span><div><b style="font-size:13px">실적_정리본.hwpx</b><small style="margin:0">만드는 중…</small></div></div><div class="mini-row"></div><div class="mini-row" style="width:80%"></div><div class="mini-row" style="width:60%"></div></div></div>
+      <p class="cap"><b>만듦</b> 회사에서 쓰는 형식 그대로 파일을 만듭니다.</p>
+    </div>
+    <div class="fc">
+      <div class="art c"><div class="frag rise"><small>검증</small><div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i></div><div class="status"><b>3/3 통과</b> · 요구 조건 · 원문 대조 · 파일</div><span class="done-btn" style="height:28px;font-size:12px;margin-top:12px">검토 완료</span></div></div>
+      <p class="cap"><b>확인만</b> 요구 조건, 원문과 숫자, 파일이 열리는지까지 검사한 뒤 보여 드립니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 검증 -->
+<section id="verify">
+<div class="pinwrap" id="vwrap">
+  <div class="inner">
+    <span class="eyebrow">검증</span>
+    <h2>틀린 건, 내가 보기 전에 잡아요.</h2>
+    <p class="lead">만들자마자 세 가지를 검사합니다. 틀리면 이유를 붙여 다시 만들고, 두 번 다시 만들어도 틀리면 멈추고 무엇이 왜 틀렸는지 알려 줍니다.</p>
+  </div>
+  <div class="pin" id="vpin">
+    <div class="paperbox">
+      <div class="doc-h"><span class="ft xls">XLS</span><h4>1분기_매출.xlsx</h4><span class="ver" id="ver">v1</span></div>
+      <table class="vsheet">
+        <thead><tr><th>월</th><th>매출</th><th>비용</th><th>이익</th></tr></thead>
+        <tbody>
+          <tr><td>1월</td><td>52,400,000</td><td>38,100,000</td><td>14,300,000</td></tr>
+          <tr><td>2월</td><td>48,900,000</td><td>35,600,000</td><td>13,300,000</td></tr>
+          <tr><td>3월</td><td>55,120,000</td><td>13,840,000</td><td id="bad">41,820,000</td></tr>
+        </tbody>
+      </table>
+      <p class="vnote" id="vnote">만들기 완료 · 검사 시작</p>
+    </div>
+    <div class="cks">
+      <div class="ck"><i>1</i><div><b>요구 조건</b><span>요청한 항목과 분량을 빠짐없이 담았는지</span></div></div>
+      <div class="ck"><i>2</i><div><b>원문 대조</b><span>숫자와 사실이 원본 자료와 같은지</span><span class="why">3월 이익이 원본과 달라요 (41,820,000 → 41,280,000)</span></div></div>
+      <div class="ck"><i>3</i><div><b>파일</b><span>실제로 열리고, 페이지가 깨지지 않는지</span></div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ④ 결과물 -->
+<section id="files">
+  <div class="inner">
+    <span class="eyebrow">결과물</span>
+    <h2><span class="shine">진짜</span> 파일로 받습니다.</h2>
+    <p class="lead">한글, 엑셀, 워드, 파워포인트, PDF. 미리보기에서 바로 확인하고, 고칠 곳은 말로 시키면 됩니다.</p>
+  </div>
+  <div class="gal" id="gal"><div class="track" id="track">
+    <div class="pg"><span class="tag"><span class="ft xls">XLS</span>A사_견적서.xlsx</span>
+      <h5>견 적 서</h5><p>수신: A사 구매팀 · 2026. 10. 16.</p><br>
+      <table><tr><th>품목</th><th>수량</th><th>금액</th></tr><tr><td>사무용 의자</td><td>12</td><td>2,220,000</td></tr><tr><td>책상 (1400)</td><td>12</td><td>2,880,000</td></tr><tr><td>모니터암</td><td>24</td><td>912,000</td></tr><tr><td>부가세</td><td></td><td>601,200</td></tr><tr><th>합계</th><th></th><th>6,613,200</th></tr></table>
+      <div class="ln" style="margin-top:18px;width:70%"></div><div class="ln" style="width:50%"></div></div>
+    <div class="pg wide"><span class="tag"><span class="ft ppt">PPT</span>주간보고.pptx</span>
+      <h5>10월 3주 영업 주간보고</h5><p>신규 수주 3건 · 견적 진행 5건 · 이슈 1건</p>
+      <div class="bars"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:70%"></i><i style="height:62%"></i><i style="height:88%"></i></div></div>
+    <div class="pg"><span class="tag"><span class="ft hwp">HWP</span>공문_회신.hwpx</span>
+      <p class="center" style="font-size:15px;font-weight:700;margin:6px 0 4px">○○주식회사</p>
+      <div class="kv"><b>수신</b><span>시설관리팀장</span><b>제목</b><span>정기 안전점검 결과 회신</span></div>
+      <p>1. 귀 팀의 무궁한 발전을 기원합니다.</p><p>2. 10월 정기 안전점검 결과를 아래와 같이 회신합니다.</p>
+      <div class="ln"></div><div class="ln" style="width:85%"></div><div class="ln" style="width:92%"></div><div class="ln" style="width:60%"></div>
+      <p style="margin-top:14px">붙임 점검 결과표 1부. 끝.</p></div>
+    <div class="pg"><span class="tag"><span class="ft doc">DOC</span>회의록_1015.docx</span>
+      <h5>주간 팀 회의록</h5><p>2026. 10. 15. (수) 10:00 · 참석 5명</p>
+      <p style="margin-top:12px;font-weight:700">결정 사항</p><ul><li>A사 견적 금요일 발송</li><li>주간보고 양식 한 장 요약 추가</li></ul>
+      <p style="font-weight:700">할 일</p><ul><li>김지훈 — 견적서 작성 (금)</li><li>이수진 — 점검 회신 (목)</li></ul>
+      <div class="ln"></div><div class="ln" style="width:75%"></div></div>
+    <div class="pg"><span class="tag"><span class="ft pdf">PDF</span>월말_정산표.pdf</span>
+      <h5>10월 월말 정산</h5><p>부서: 영업2팀</p><br>
+      <table><tr><th>항목</th><th>금액</th></tr><tr><td>교통비</td><td>184,500</td></tr><tr><td>식대</td><td>312,000</td></tr><tr><td>소모품</td><td>96,800</td></tr><tr><th>합계</th><th>593,300</th></tr></table>
+      <div class="ln" style="margin-top:18px;width:60%"></div></div>
+  </div></div>
+  <div class="inner" style="margin-top:56px">
+    <div class="split">
+      <div class="box rise">
+        <div class="doc-h"><span class="ft xls">XLS</span><h4>A사_견적서.xlsx</h4><span class="ok">v2</span></div>
+        <table class="sheet"><thead><tr><th>품목</th><th>금액</th></tr></thead>
+          <tbody><tr><td>사무용 의자</td><td>2,220,000</td></tr><tr><td>책상 (1400)</td><td>2,880,000</td></tr><tr><td>모니터암</td><td>912,000</td></tr><tr class="sum"><td>합계 (부가세 포함)</td><td>6,613,200</td></tr></tbody></table>
+      </div>
+      <div class="box rise">
+        <small style="color:var(--text3);font-size:12px;font-weight:600">수정 요청</small>
+        <div class="say me">합계 행 굵게 하고, 부가세 포함이라고 써 줘</div>
+        <div class="say ai">고쳤어요. 합계 행을 굵게 하고 "부가세 포함"을 붙였어요. (v2)</div>
+        <div class="say me">다음부터 견적서는 항상 이렇게</div>
+        <div class="say ai">앞으로 견적서에 이 규칙을 적용할게요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ 작업 기억 -->
+<section>
+  <div class="inner">
+    <span class="eyebrow">작업 기억</span>
+    <h2>한 번 고친 건,<br>다음엔 <span class="shine">처음부터</span> 그렇게.</h2>
+    <p class="lead">고친 내용과 회사 사정을 기억해서 다음 결과물에 반영합니다. 이 기억은 나만을 위해 쓰입니다.</p>
+    <div class="memo">
+      <div class="frag rise"><small>규칙 · 견적서</small>합계 행은 굵게, "부가세 포함" 표기</div>
+      <div class="frag rise"><small>메모 · 회사 사정</small>A사는 단가를 천 원 단위로 반올림해서 받음</div>
+      <div class="frag rise"><small>규칙 · 보고서</small>팀장님 보고는 한 장 요약을 맨 앞에</div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ 신뢰 -->
+<section id="trust">
+  <div class="inner">
+    <span class="eyebrow">개인정보와 통제</span>
+    <h2>대화는 <span class="mask" id="mask">●●●●</span>에만 저장됩니다.</h2>
+    <p class="lead">우리 서버로 모으지 않습니다. 결과물을 만들 때 필요한 부분만, 동의를 받고 AI에 보냅니다.</p>
+  </div>
+  <div class="trust">
+    <div class="box rise"><h3>내 PC에 저장</h3><p>읽어 온 대화와 파일은 내 컴퓨터에 저장됩니다. 지정한 방만 읽습니다.</p></div>
+    <div class="box rise"><h3>나만을 위한 기억</h3><p>규칙과 메모는 내 결과물에만 쓰이고, 다른 사용자와 공유되지 않습니다.</p></div>
+    <div class="box rise"><h3>보내기 전엔 내가 승인</h3><p>남에게 보내는 일은 미리보고 승인해야만 나갑니다.</p></div>
+  </div>
+</section>
+
+<!-- 자주 묻는 질문 -->
+<section id="faq">
+  <div class="inner"><span class="eyebrow">자주 묻는 질문</span><h2>궁금한 것들</h2></div>
+  <div class="faq">
+    <details><summary>언제 출시되나요?</summary><p>출시를 준비하고 있어요. 출시 알림을 신청하면 가장 먼저 알려 드릴게요.</p></details>
+    <details><summary>어떤 대화를 읽나요?</summary><p>내가 고른 방의 대화만 읽어요. 고르지 않은 방의 대화는 저장하지 않아요.</p></details>
+    <details><summary>내 대화는 어디에 저장되나요?</summary><p>내 PC에 저장돼요. 우리 서버로 모으지 않아요. 결과물을 만들 때 필요한 부분만, 처음에 동의를 받고 AI에 보내요.</p></details>
+    <details><summary>내가 모르는 사이에 메시지를 보내나요?</summary><p>아니요. 남에게 보내는 일은 미리 보고 승인해야만 나가요.</p></details>
+    <details><summary>어떤 파일을 만들 수 있나요?</summary><p>한글(hwpx), 워드, 엑셀, 파워포인트, PDF, 그리고 바로 붙여 넣을 회신 문구를 만들어요.</p></details>
+    <details><summary>회사 PC에서도 쓸 수 있나요?</summary><p>Windows와 macOS를 지원할 예정이에요. 다만 회사 보안 정책에 따라 설치나 사용이 제한될 수 있어요.</p></details>
+    <details><summary>가격은 얼마인가요?</summary><p>출시할 때 공개해요. 알림을 신청한 초기 사용자에게는 혜택을 드려요.</p></details>
+  </div>
+</section>
+
+<!-- ⑦ 비전 + 신청 -->
+<section id="signup" class="cta">
+  <div class="inner">
+    <span class="eyebrow">출시 알림</span>
+    <h2>대화가 일이 되는 새로운 표준.<br>카카오톡에서 시작합니다.</h2>
+    <p class="lead" style="margin-left:auto;margin-right:auto">출시되면 가장 먼저 알려 드릴게요. 초기 신청자에게는 혜택을 드립니다.</p>
+  </div>
+  <form id="form" novalidate>
+    <label><span>이메일</span> <input type="email" name="email" required autocomplete="email" placeholder="name@company.com"></label>
+    <label><span>하시는 일 <small>(선택)</small></span>
+      <select name="job"><option value="">선택 안 함</option><option>사무·관리</option><option>영업</option><option>마케팅</option><option>기획</option><option>디자인</option><option>개발</option><option>기타</option></select>
+    </label>
+    <label><span>대화로 주로 받는 일 <small>(선택)</small></span><input type="text" name="work" maxlength="200" placeholder="예: 견적서, 주간보고, 회의록"></label>
+    <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label class="check"><input type="checkbox" name="agree" required> <span><a href="privacy.html" target="_blank">개인정보 수집·이용</a>에 동의합니다 (필수)</span></label>
+    <button class="btn" type="submit">출시 알림 받기</button>
+    <p class="msgline" id="msg" role="status" aria-live="polite"></p>
+  </form>
+</section>
+
+<footer>
+  <span><span data-name></span> · 출시 준비 중</span>
+  <span><a href="privacy.html">개인정보 처리방침</a> · <a href="mailto:hello2361haha@gmail.com">문의</a></span>
+  <span style="flex-basis:100%">카카오톡은 ㈜카카오의 상표입니다. <span data-name></span>은 ㈜카카오와 제휴 관계가 아닙니다.</span>
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+// 제품명이 정해지면 여기 한 곳만 바꾼다
+const NAME = '[이름]'
+if (new URLSearchParams(location.search).get('t') === 'light') document.documentElement.dataset.t = 'light'
+// Google Apps Script 웹앱 URL (landing/apps-script.gs 배포 후 붙여 넣기)
+const ENDPOINT = ''
+
+document.querySelectorAll('[data-name]').forEach(e => e.textContent = NAME)
+document.title = document.title.replace('[이름]', NAME)
+
+const nav = document.getElementById('nav')
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true })
+
+// 신청 폼
+const form = document.getElementById('form'), msg = document.getElementById('msg')
+form.addEventListener('submit', async e => {
+  e.preventDefault()
+  const d = Object.fromEntries(new FormData(form))
+  const say = (t, ok) => { msg.textContent = t; msg.className = 'msgline ' + (ok ? 'ok' : 'err') }
+  if (d.website) return say('신청됐어요.', true) // 봇
+  if (!form.email.checkValidity()) return say('이메일 주소를 확인해 주세요.')
+  if (!d.agree) return say('개인정보 수집·이용에 동의해 주세요.')
+  if (!ENDPOINT) return say('신청 접수를 준비 중이에요. 잠시 후 다시 시도해 주세요.')
+  const btn = form.querySelector('button'); btn.disabled = true
+  try {
+    // Apps Script는 CORS 응답을 주지 않아 no-cors로 보낸다 (응답 본문은 못 읽음, 네트워크 실패만 잡힘)
+    await fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ email: d.email, job: d.job, work: d.work }) })
+    form.reset(); say('신청됐어요. 출시되면 가장 먼저 알려 드릴게요.', true)
+  } catch { say('전송에 실패했어요. 잠시 후 다시 시도하거나 문의 메일로 알려 주세요.') }
+  finally { btn.disabled = false }
+})
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+const $ = id => document.getElementById(id)
+
+// 히어로: 진짜 앱 화면(app.html)을 1440×900으로 띄우고 칸에 맞춰 축소
+const dark = document.documentElement.dataset.t !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches
+const app = $('app'), shot = $('shot')
+app.src = 'app.html?name=' + encodeURIComponent(NAME) + '&t=' + (dark ? 'dark' : 'light')
+function fit() {
+  const w = shot.clientWidth, h = shot.clientHeight, k = Math.max(w / 1440, h / 900)
+  app.style.transform = `translate(${w - 1440 * k}px,0) scale(${k})` // 좁으면 오른쪽(지금 처리)을 남긴다
+}
+fit(); addEventListener('resize', fit)
+new IntersectionObserver(([e]) => app.contentWindow?.postMessage(e.isIntersecting ? 'play' : 'pause', '*')).observe(shot)
+
+
+// 하루·검증: 진행도(s)에 따라 상태를 그린다. 모션이 없으면 마지막 상태만
+const mos = [...document.querySelectorAll('.mo')], fcs = [...document.querySelectorAll('.fcard')]
+function setDay(s) { // s: 0~4.6
+  mos.forEach((m, i) => m.classList.toggle('on', s >= i))
+  fcs.forEach((c, i) => {
+    const st = s >= i + .7 ? 'ready' : s >= i ? 'make' : ''
+    c.className = 'fcard ' + st
+    c.querySelector('.st').textContent = st === 'ready' ? '검증 3/3 통과' : st === 'make' ? '만드는 중…' : '대기'
+  })
+  const h = 9 + Math.min(s / 4.6, 1) * 9, hh = Math.floor(h), mm = Math.floor((h - hh) * 60)
+  $('clk').textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0')
+  $('clkbar').style.width = Math.min(s / 4.6, 1) * 100 + '%'
+  $('daysum').classList.toggle('on', s >= 4.3)
+}
+const cks = [...document.querySelectorAll('.ck')]
+const VSTEP = [
+  ['v1', '만들기 완료 · 검사 시작', ['', '', ''], ''],
+  ['v1', '① 요구 조건 통과', ['ok', '', ''], ''],
+  ['v1', '② 원문 대조에서 틀린 숫자를 찾았어요', ['ok', 'bad', ''], 'err'],
+  ['v2', '이유를 붙여 다시 만들었어요', ['ok', 'ok', ''], 'fix'],
+  ['v2', '검증 3/3 통과 · 확인만 하면 돼요', ['ok', 'ok', 'ok'], 'fix'],
+]
+function setVerify(i) {
+  const [v, note, st, cell] = VSTEP[i]
+  $('ver').textContent = v; $('vnote').textContent = note
+  cks.forEach((c, k) => { c.className = 'ck ' + st[k]; c.querySelector('i').textContent = st[k] === 'ok' ? '✓' : st[k] === 'bad' ? '!' : k + 1 })
+  $('bad').className = cell; $('bad').textContent = cell === 'fix' ? '41,280,000' : '41,820,000'
+}
+if (reduce || !window.gsap) {
+  $('mask').textContent = '내 PC'; setDay(9); setVerify(4)
+} else {
+  gsap.registerPlugin(ScrollTrigger)
+
+  // 히어로: 앱 화면이 다가온다
+  gsap.fromTo('#shot', { scale: .93 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '#shot', start: 'top 95%', end: 'top 15%', scrub: true } })
+
+  const mm = gsap.matchMedia()
+  mm.add('(min-width: 901px)', () => {
+    setDay(0); setVerify(0)
+    // 하루: 화면을 고정하고 스크롤로 09:00 → 18:00
+    ScrollTrigger.create({ trigger: '#daywrap', start: 'center center', end: '+=2400', pin: true, scrub: true,
+      onUpdate: t => setDay(t.progress * 4.6) })
+    // 검증: 고정하고 단계별로
+    ScrollTrigger.create({ trigger: '#vwrap', start: 'center center', end: '+=1800', pin: true, scrub: true,
+      onUpdate: t => setVerify(Math.min(4, Math.floor(t.progress * 5))) })
+    // 결과물: 세로 스크롤 → 가로 이동
+    const track = $('track')
+    const gal = $('gal')
+    gsap.to(track, { x: () => -(track.scrollWidth - gal.clientWidth), ease: 'none',
+      scrollTrigger: { trigger: '#gal', start: 'center center', end: () => '+=' + (track.scrollWidth - gal.clientWidth), pin: true, scrub: true, invalidateOnRefresh: true } })
+  })
+  mm.add('(max-width: 900px)', () => { setDay(9); setVerify(4) })
+
+  // ② 스크롤하면 진해지는 글
+  document.querySelectorAll('#wipe p').forEach(p => {
+    const html = [...p.childNodes].map(n => n.nodeType === 3
+      ? n.textContent.split(/(\s+)/).map(w => w.trim() ? `<span class="w">${w}</span>` : w).join('')
+      : `<span class="w">${n.outerHTML}</span>`).join('')
+    p.innerHTML = html
+  })
+  const words = [...document.querySelectorAll('#wipe .w')]
+  ScrollTrigger.create({ trigger: '#wipe', start: 'top 75%', end: 'bottom 45%', scrub: true,
+    onUpdate: s => { const n = Math.round(s.progress * words.length); words.forEach((w, i) => w.style.color = i < n ? 'var(--text)' : '') } })
+
+  // 키워드 반짝임
+  document.querySelectorAll('.shine').forEach(el => ScrollTrigger.create({ trigger: el, start: 'top 85%', once: true, onEnter: () => el.classList.add('go') }))
+
+  // UI 조각 떠오르기
+  ScrollTrigger.batch('.rise', { start: 'top 88%', once: true,
+    onEnter: b => gsap.to(b, { opacity: 1, y: 0, duration: .7, stagger: .1, ease: 'power3.out' }) })
+
+  // ⑥ 마스킹 풀림
+  ScrollTrigger.create({ trigger: '#mask', start: 'top 80%', once: true, onEnter: () => {
+    const target = '내 PC', el = $('mask'); let i = 0
+    const t = setInterval(() => { i++; el.textContent = target.slice(0, i) + '●'.repeat(Math.max(0, 4 - i)); if (i >= 4) { el.textContent = target; clearInterval(t) } }, 160)
+  } })
+}
+</script>
+</body>
+</html>
